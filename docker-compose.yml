@@ -1,0 +1,12 @@
+services:
+  paddleocr:
+    build:
+      context: ./paddleocr
+    environment:
+      - UID=${UID}
+      - GID=${GID}
+    volumes:
+      - ./paddleocr:/app
+    tty: true
+    env_file:
+      - .env
