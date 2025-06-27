@@ -1,0 +1,2 @@
+layoutparser
+pillow<10.0.0

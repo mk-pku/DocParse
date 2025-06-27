@@ -1,0 +1,12 @@
+services:
+  layoutparser:
+    build:
+      context: ./layoutparser
+    environment:
+      - UID=${UID}
+      - GID=${GID}
+    volumes:
+      - ./layoutparser:/app
+    tty: true
+    env_file:
+      - .env

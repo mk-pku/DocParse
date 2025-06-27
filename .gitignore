@@ -1,5 +1,6 @@
 .env
 input/
 output/
+models/
 *.pyc
 __pycache__/
