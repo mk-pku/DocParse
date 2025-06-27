@@ -1,17 +1,21 @@
 {
   "name": "DocParse - PaddleOCR",
   "dockerComposeFile": [
-    "../../docker-compose.yml"
+    "../../docker-compose.po.yml"
   ],
   "service": "paddleocr",
   "workspaceFolder": "/app",
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-python.python"
+        "ms-python.python",
+        "charliermarsh.ruff"
       ],
       "settings": {
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+        },
       }
     }
   }

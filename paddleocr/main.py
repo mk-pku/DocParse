@@ -1,21 +1,30 @@
-import os
-from document_parser import DocumentParser
-from paddleocr_parser import PaddleOCRParser
+from paddle_analyzer import PaddleOCRAnalyzer
 
 
-# --- 設定 ---
-DATA_DIR = './ocr_data'
-IMAGE_NAME = 'sample.png'
-# --- 設定ここまで ---
+def main():
+    INPUT_IMAGE = "input/sample01.png"
+    OUTPUT_IMAGE = "output/sample01.png"
 
-image_full_path = os.path.join(DATA_DIR, IMAGE_NAME)
+    # analyzer = DocLayoutAnalyzer(conf=0.25)
+    # analyzer = LayoutParserAnalyzer(score_thresh=0.8)
+    analyzer = PaddleOCRAnalyzer()
+    print(f"Using analyzer: {analyzer.__class__.__name__}")
 
-# --- 使用するパーサーを選択 ---
-# ここでインスタンス化するクラスを切り替えるだけで、
-# 使用するOCRライブラリを変更できる。
-# parser: DocumentParser = TesseractParser() # Tesseractを使う場合
-parser: DocumentParser = PaddleOCRParser(use_gpu=False)
+    try:
+        layout_result = analyzer.analyze(INPUT_IMAGE)
 
-# --- 処理の実行 ---
-# どの具象クラスでも、同じ'parse'メソッドで呼び出せる
-parser.parse(image_full_path)
+        print(f"Detected {len(layout_result.blocks)} blocks.")
+        for i, block in enumerate(layout_result.blocks):
+            print(
+                f"  - Block {i + 1}: Label={block.label}, Score={block.score:.2f}, Box={block.box}"
+            )
+
+        layout_result.save_result_image(OUTPUT_IMAGE)
+        print(f"Visualization saved to: {OUTPUT_IMAGE}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+if __name__ == "__main__":
+    main()
