@@ -1,0 +1,12 @@
+services:
+  pdf2png:
+    build:
+      context: ./pdf2png
+    environment:
+      - UID=${UID}
+      - GID=${GID}
+    volumes:
+      - ./pdf2png:/app
+    tty: true
+    env_file:
+      - .env

@@ -1,0 +1,22 @@
+{
+  "name": "DocParse - pdf2png",
+  "dockerComposeFile": [
+    "../../docker-compose.pp.yml"
+  ],
+  "service": "pdf2png",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+        },
+      }
+    }
+  }
+}
