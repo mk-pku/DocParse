@@ -1,0 +1,12 @@
+services:
+  doclayout:
+    build:
+      context: ./doclayout
+    environment:
+      - UID=${UID}
+      - GID=${GID}
+    volumes:
+      - ./doclayout:/app
+    tty: true
+    env_file:
+      - .env
