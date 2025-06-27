@@ -1,17 +1,28 @@
-import cv2
-from doclayout_yolo import YOLOv10
-from huggingface_hub import hf_hub_download
 
-ckpt = hf_hub_download(
-	repo_id="juliozhao/DocLayout-YOLO-DocStructBench",
-	filename="doclayout_yolo_docstructbench_imgsz1024.pt")
+from doclayout_analyzer import DocLayoutAnalyzer
 
-model = YOLOv10(ckpt)
-results = model.predict(
-	"input/sample01.png",
-	imgsz=1024,	# 入力解像度
-	conf=0.25,	# 信頼度閾値
-	device="cpu",	# GPU / CPU
-)
-annot = results[0].plot(pil=True, line_width=3, font_size=18)
-cv2.imwrite("output/sample01.png", annot)
+
+def main():
+	INPUT_IMAGE = "input/sample01.png"
+	OUTPUT_IMAGE = "output/sample01.png"
+	
+	analyzer = DocLayoutAnalyzer(conf=0.25)
+	# analyzer = LayoutParserAnalyzer(score_thresh=0.8)
+	# analyzer = PaddleOCRAnalyzer()
+	print(f"Using analyzer: {analyzer.__class__.__name__}")
+
+	try:
+		layout_result = analyzer.analyze(INPUT_IMAGE)
+		
+		print(f"Detected {len(layout_result.blocks)} blocks.")
+		for i, block in enumerate(layout_result.blocks):
+			print(f"  - Block {i+1}: Label={block.label}, Score={block.score:.2f}, Box={block.box}")
+			
+		layout_result.save_result_image(OUTPUT_IMAGE)
+		print(f"Visualization saved to: {OUTPUT_IMAGE}")
+
+	except Exception as e:
+		print(f"An error occurred: {e}")
+
+if __name__ == '__main__':
+	main()
