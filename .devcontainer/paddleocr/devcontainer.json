@@ -1,7 +1,7 @@
 {
   "name": "DocParse - PaddleOCR",
   "dockerComposeFile": [
-    "../../docker-compose.po.yml"
+    "../../docker-compose.yml"
   ],
   "service": "paddleocr",
   "workspaceFolder": "/app",

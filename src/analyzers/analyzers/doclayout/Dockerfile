@@ -1,7 +1,11 @@
-FROM paddlepaddle/paddle:3.0.0
+FROM pytorch/pytorch:2.7.1-cuda12.8-cudnn9-runtime
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+    git \
+    build-essential \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
     wget \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.17/gosu-amd64" \
     && chmod +x /usr/local/bin/gosu \
@@ -9,9 +13,11 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN python -m pip install 'git+https://github.com/opendatalab/DocLayout-YOLO.git'
+
 WORKDIR /app
 
-COPY requirements.txt ./
+COPY src/analyzers/analyzers/doclayout/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY entrypoint.sh /usr/local/bin/

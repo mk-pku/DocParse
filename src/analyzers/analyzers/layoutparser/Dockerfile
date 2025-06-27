@@ -17,7 +17,7 @@ RUN python -m pip install 'git+https://github.com/facebookresearch/detectron2.gi
 
 WORKDIR /app
 
-COPY requirements.txt ./
+COPY src/analyzers/analyzers/layoutparser/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY entrypoint.sh /usr/local/bin/

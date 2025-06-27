@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM paddlepaddle/paddle:3.0.0
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -11,7 +11,7 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY requirements.txt ./
+COPY src/analyzers/analyzers/paddleocr/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY entrypoint.sh /usr/local/bin/

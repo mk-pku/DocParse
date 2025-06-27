@@ -1,7 +1,7 @@
 {
   "name": "DocParse - pdf2png",
   "dockerComposeFile": [
-    "../../docker-compose.pp.yml"
+    "../../docker-compose.yml"
   ],
   "service": "pdf2png",
   "workspaceFolder": "/app",

@@ -1,0 +1,38 @@
+x-common-settings: &common-settings
+  environment:
+    - UID=${UID}
+    - GID=${GID}
+  env_file:
+    - .env
+  tty: true
+  command: /bin/bash
+  volumes:
+    - ./src:/app/src
+    - ./data:/app/data
+    - ./models:/app/models
+  working_dir: /app
+
+services:
+  doclayout:
+    <<: *common-settings
+    build:
+      context: .
+      dockerfile: ./src/analyzers/analyzers/doclayout/Dockerfile
+
+  layoutparser:
+    <<: *common-settings
+    build:
+      context: .
+      dockerfile: ./src/analyzers/analyzers/layoutparser/Dockerfile
+
+  paddleocr:
+    <<: *common-settings
+    build:
+      context: .
+      dockerfile: ./src/analyzers/analyzers/paddleocr/Dockerfile
+
+  pdf2png:
+    <<: *common-settings
+    build:
+      context: .
+      dockerfile: ./src/pdf2png/Dockerfile

@@ -3,8 +3,8 @@ from pathlib import Path
 import fitz
 
 
-INPUT_DIR = Path(os.getenv("INPUT_DIR", "input"))
-OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "output"))
+INPUT_DIR = Path("/app/src/pdf2png/input")
+OUTPUT_DIR = Path("/app/data/input")
 
 class PdfToPng:
     def __init__(self, pdf_path: str, output_dir: str):

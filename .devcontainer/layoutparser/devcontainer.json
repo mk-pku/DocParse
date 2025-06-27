@@ -1,7 +1,7 @@
 {
   "name": "DocParse - LayoutParser",
   "dockerComposeFile": [
-    "../../docker-compose.lp.yml"
+    "../../docker-compose.yml"
   ],
   "service": "layoutparser",
   "workspaceFolder": "/app",

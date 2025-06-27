@@ -1,7 +1,7 @@
 {
   "name": "DocParse - DocLayout",
   "dockerComposeFile": [
-    "../../docker-compose.dl.yml"
+    "../../docker-compose.yml"
   ],
   "service": "doclayout",
   "workspaceFolder": "/app",

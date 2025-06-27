@@ -1,6 +1,6 @@
 import cv2
-from base import AbstractLayoutAnalyzer
-from common import LayoutResult, LayoutBlock
+from common.base import AbstractLayoutAnalyzer
+from common.models import LayoutResult, LayoutBlock
 from paddleocr import LayoutDetection
 
 
