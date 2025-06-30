@@ -1,15 +1,47 @@
 import argparse
+import importlib
 from pathlib import Path
-
-# from analyzers.doclayout.analyzer import DocLayoutAnalyzer
-from analyzers.layoutparser.analyzer import LayoutParserAnalyzer
-# from analyzers.paddleocr.analyzer import PaddleOCRAnalyzer
+import sys
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 INPUT_DIR = DATA_DIR / "input"
 OUTPUT_DIR = DATA_DIR / "output"
+
+ANALYZER_MAP = {
+    "doclayout": {
+        "module_path": "analyzers.doclayout.analyzer",
+        "class_name": "DocLayoutAnalyzer",
+        "init_params": {"conf": 0.25},
+    },
+    "layoutparser": {
+        "module_path": "analyzers.layoutparser.analyzer",
+        "class_name": "LayoutParserAnalyzer",
+        "init_params": {"score_thresh": 0.25},
+    },
+    "paddleocr": {
+        "module_path": "analyzers.paddleocr.analyzer",
+        "class_name": "PaddleOCRAnalyzer",
+        "init_params": {},
+    },
+}
+
+
+def get_analyzer(name: str):
+    if name not in ANALYZER_MAP:
+        raise ValueError(f"Analyzer '{name}' is not supported.")
+    config = ANALYZER_MAP[name]
+    try:
+        module = importlib.import_module(config["module_path"])
+        AnalyzerClass = getattr(module, config["class_name"])
+        return AnalyzerClass(**config["init_params"])
+    except ImportError as e:
+        raise ImportError(f"Failed to import analyzer '{name}': {e}") from e
+    except AttributeError as e:
+        raise AttributeError(
+            f"Analyzer class '{config['class_name']}' not found in module '{config['module_path']}': {e}"
+        ) from e
 
 
 def main():
@@ -19,6 +51,14 @@ def main():
     parser.add_argument(
         "-i", "--image", type=str, required=True, help="Path to the input image file."
     )
+    parser.add_argument(
+        "-a",
+        "--analyzer",
+        type=str,
+        required=True,
+        choices=list(ANALYZER_MAP.keys()),
+        help="The analyzer to use for processing.",
+    )
     args = parser.parse_args()
 
     input_image_path = Path(args.image)
@@ -26,9 +66,9 @@ def main():
         print(f"Error: Input file not found at '{input_image_path}'")
         return
 
-    # analyzer = DocLayoutAnalyzer(conf=0.25)
-    analyzer = LayoutParserAnalyzer(score_thresh=0.5)
-    # analyzer = PaddleOCRAnalyzer()
+    analyzer = get_analyzer(args.analyzer)
+    if not analyzer:
+        sys.exit(1)
     print(f"Using analyzer: {analyzer.__class__.__name__}")
 
     analyzer_output_dir = OUTPUT_DIR / analyzer.__class__.__name__
