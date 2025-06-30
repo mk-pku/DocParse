@@ -1,3 +1,4 @@
+from pathlib import Path
 import cv2
 from common.base import AbstractLayoutAnalyzer
 from common.models import LayoutResult, LayoutBlock
@@ -7,7 +8,9 @@ import layoutparser as lp
 class LayoutParserAnalyzer(AbstractLayoutAnalyzer):
     def __init__(self, score_thresh: float = 0.8):
         analyzer_dir = Path(__file__).resolve().parent
-        config_path = "/app/models/layoutparser/PubLayNet-mask_rcnn_X_101_32x8d_FPN_3x-config.yml"
+        config_path = (
+            "/app/models/layoutparser/PubLayNet-mask_rcnn_X_101_32x8d_FPN_3x-config.yml"
+        )
         model_path = "/app/models/layoutparser/PubLayNet-mask_rcnn_X_101_32x8d_FPN_3x-model_final.pth"
 
         self.model = lp.Detectron2LayoutModel(  # type: ignore
